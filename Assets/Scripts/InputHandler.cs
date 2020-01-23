@@ -34,6 +34,29 @@ public class InputHandler : MonoBehaviour
 
 	private void MovePlayer(Vector2 direction)
 	{
-		transform.Translate(direction.x, direction.y, 0);
+		if (!DetectCollision(direction))
+		{
+			transform.Translate(direction.x, direction.y, 0);
+		}
+	}
+
+	private bool DetectCollision(Vector2 direction)
+	{
+		Vector2 startPosition = new Vector2(
+			transform.position.x,
+			transform.position.y
+			);
+
+		Vector2 endPosition = startPosition + direction;
+
+		RaycastHit2D hit = Physics2D.Linecast(startPosition, endPosition);
+
+		if (hit.transform != null)
+		{
+			print(hit.transform.name);
+			return true;
+		}
+
+		return false;
 	}
 }
