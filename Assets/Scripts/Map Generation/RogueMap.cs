@@ -27,8 +27,8 @@ public class RogueMap
 		InitializeMap();
 		CreateRooms();
 		BuildRooms();
+		BuildTunnels();
 		InitializePlayer();
-		//CreateHorizontalTunnel(rogueTileMap, floor, 6, 2, 2);
 	}
 
 	public void RenderToTilemap()
@@ -104,11 +104,15 @@ public class RogueMap
 			{
 				for (int y = room.y + 1; y < room.y2; y++)
 				{
-					//Debug.Log("x: " + x + " y: " + y);
-					rogueTiles[x, y].data = mapData.floorTileData;
+					UpdateTile(x, y, mapData.floorTileData);
 				}
 			}
 		}
+	}
+
+	private void UpdateTile(int x, int y, RogueTileData rogueTileData)
+	{
+		rogueTiles[x, y].data = rogueTileData;
 	}
 
 	void InitializePlayer()
@@ -140,20 +144,50 @@ public class RogueMap
 		RenderToTilemap();
 	}
 
-	//static void CreateHorizontalTunnel(RogueTile[,] rogueTileMap, RogueTileData floor, int x1, int x2, int y)
-	//{
-	//	for (int x = Mathf.Min(x1, x2); x < Mathf.Max(x1, x2); x++)
-	//	{
-	//		rogueTileMap[x, y].data = floor;
-	//	}
-	//}
+	void BuildTunnels()
+	{
+		Vector2Int center1;
+		Vector2Int center2;
 
-	//static void CreateVerticalTunnel(RogueTile[,] rogueTileMap, RogueTileData floor, int y1, int y2, int x)
-	//{
-	//	for (int y = Mathf.Min(y1, y2); y < Mathf.Max(y1, y2); y++)
-	//	{
-	//		rogueTileMap[x, y].data = floor;
-	//	}
-	//}
+		for (int i = 1; i < rooms.Count; i++)
+		{
+
+			center1 = rooms[i - 1].CenterPoint();
+			center2 = rooms[i].CenterPoint();
+
+			// Flip a coin to decide if we'll dig horizontally first
+			if (RandomBool())
+			{
+				CreateHorizontalTunnel(center1.x, center2.x, center1.y);
+				CreateVerticalTunnel(center1.y, center2.y, center2.x);
+			}
+			else
+			{
+				CreateVerticalTunnel(center1.y, center2.y, center1.x);
+				CreateHorizontalTunnel(center1.x, center2.x, center2.y);
+			}
+		}
+	}
+
+	bool RandomBool()
+	{
+		return Random.Range(0, 2) == 0;
+	}
+
+	void CreateHorizontalTunnel(int x1, int x2, int y)
+	{
+		for (int x = Mathf.Min(x1, x2); x <= Mathf.Max(x1, x2); x++)
+		{
+			UpdateTile(x, y, mapData.floorTileData);
+		}
+	}
+
+	void CreateVerticalTunnel(int y1, int y2, int x)
+	{
+		for (int y = Mathf.Min(y1, y2); y <= Mathf.Max(y1, y2); y++)
+		{
+			UpdateTile(x, y, mapData.floorTileData);
+		}
+	}
 }
 
