@@ -17,4 +17,7 @@ public class RogueMapData : ScriptableObject
 
 	public RogueTileData floorTileData;
 	public RogueTileData wallTileData;
+
+	public int maximumMonstersPerRoom;
+	public EntityData[] monstersToSpawn;
 }

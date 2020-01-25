@@ -21,3 +21,7 @@ MonoBehaviour:
   maximumNumberOfRooms: 30
   floorTileData: {fileID: 11400000, guid: 87f69bd50633b6f459ac4ad036ba4129, type: 2}
   wallTileData: {fileID: 11400000, guid: 34613ef34896a8c4cbd9018008a4b8af, type: 2}
+  maximumMonstersPerRoom: 5
+  monstersToSpawn:
+  - {fileID: 11400000, guid: dada6ef1bb88f9e408ef3f2ef6529e6e, type: 2}
+  - {fileID: 11400000, guid: 8b579fb5a697220479ad0e0ae0e69134, type: 2}

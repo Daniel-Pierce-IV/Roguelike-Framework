@@ -33,6 +33,7 @@ public class RogueMap
 		BuildRooms();
 		BuildTunnels();
 		InitializePlayer();
+		SpawnMonsters();
 	}
 
 	public void MovePlayer(Vector2Int direction)
@@ -198,6 +199,39 @@ public class RogueMap
 		for (int y = Mathf.Min(y1, y2); y <= Mathf.Max(y1, y2); y++)
 		{
 			UpdateTile(x, y, mapData.floorTileData);
+		}
+	}
+
+	void SpawnMonsters()
+	{
+		foreach (var room in rooms)
+		{
+			int monsterCount = Random.Range(0, mapData.maximumMonstersPerRoom + 1);
+
+			for (int i = 0; i < monsterCount; i++)
+			{
+				bool shouldSpawn = true;
+				Vector2Int spawnPoint = room.RandomPosition();
+
+				// Ensure possible spawn point isn't already occupied
+				foreach (var entity in entities)
+				{
+					if (entity.GetRogueMapPosition() == spawnPoint)
+					{
+						shouldSpawn = false;
+						break;
+					}
+				}
+
+				if (shouldSpawn)
+				{
+					int monsterIndex = Random.Range(0, mapData.monstersToSpawn.Length);
+					EntityData monsterData = mapData.monstersToSpawn[monsterIndex];
+
+					Entity monster = new Entity(monsterData, spawnPoint.x, spawnPoint.y);
+					entities.Add(monster);
+				}
+			}
 		}
 	}
 }

@@ -35,4 +35,11 @@ class Room
 			x <= room.x2 && x2 >= room.x &&
 			y <= room.y2 && y2 >= room.y);
 	}
+
+	public Vector2Int RandomPosition()
+	{
+		return new Vector2Int(
+			Random.Range(x + 1, x2),
+			Random.Range(y + 1, y2));
+	}
 }
