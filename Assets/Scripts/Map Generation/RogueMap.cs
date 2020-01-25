@@ -6,11 +6,15 @@ public class RogueMap
 {
 	RogueMapData mapData;
 	RogueTile[,] rogueTiles;
+
 	Tilemap tilemap;
 	List<Room> rooms;
-	List<Entity> entities;
+
 	EntityData playerData;
-	Vector2Int playerCoordinates;
+	List<Entity> entities;
+
+	float cameraXOffset = -0.5f;
+	float cameraYOffset = 0.75f;
 
 	public RogueMap(Tilemap tilemap, EntityData playerData)
 	{
@@ -29,6 +33,21 @@ public class RogueMap
 		BuildRooms();
 		BuildTunnels();
 		InitializePlayer();
+	}
+
+	public void MovePlayer(Vector2Int direction)
+	{
+		Vector2Int destination = entities[0].GetRogueMapPosition() + direction;
+		RogueTile destinationTile = rogueTiles[destination.x, destination.y];
+
+		if (!destinationTile.data.blocksMovement)
+		{
+			entities[0].x = destination.x;
+			entities[0].y = destination.y;
+			UpdateCameraPosition();
+		}
+
+		RenderToTilemap();
 	}
 
 	public void RenderToTilemap()
@@ -110,11 +129,12 @@ public class RogueMap
 		}
 	}
 
-	private void UpdateTile(int x, int y, RogueTileData rogueTileData)
+	void UpdateTile(int x, int y, RogueTileData rogueTileData)
 	{
 		rogueTiles[x, y].data = rogueTileData;
 	}
 
+	// Spawn the player in the center of the room created first
 	void InitializePlayer()
 	{
 		entities.Add(
@@ -122,26 +142,17 @@ public class RogueMap
 				playerData,
 				rooms[0].CenterPoint().x,
 				rooms[0].CenterPoint().y));
+
+		UpdateCameraPosition();
 	}
 
-	public void MovePlayer(Vector2Int direction)
+	// Set camera's position to match player position
+	void UpdateCameraPosition()
 	{
-		Vector2Int destination = entities[0].GetRogueMapPosition() + direction;
-		RogueTile destinationTile = rogueTiles[destination.x, destination.y];
-
-		if (!destinationTile.data.blocksMovement)
-		{
-			entities[0].x = destination.x;
-			entities[0].y = destination.y;
-
-			// Camera follows player
-			Camera.main.transform.position = new Vector3(
-				destination.x - 0.5f,
-				destination.y + 0.75f,
+		Camera.main.transform.position = new Vector3(
+				entities[0].x + cameraXOffset,
+				entities[0].y + cameraYOffset,
 				Camera.main.transform.position.z);
-		}
-
-		RenderToTilemap();
 	}
 
 	void BuildTunnels()
@@ -190,4 +201,3 @@ public class RogueMap
 		}
 	}
 }
-
