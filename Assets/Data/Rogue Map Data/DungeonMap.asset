@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 063d761d8fb72524e81e4508be90a41c, type: 3}
+  m_Name: DungeonMap
+  m_EditorClassIdentifier: 
+  mapWidth: 50
+  mapHeight: 50
+  minimumRoomWidth: 4
+  maximumRoomWidth: 10
+  minimumRoomHeight: 4
+  maximumRoomHeight: 10
+  maximumNumberOfRooms: 30
+  floorTileData: {fileID: 11400000, guid: 87f69bd50633b6f459ac4ad036ba4129, type: 2}
+  wallTileData: {fileID: 11400000, guid: 34613ef34896a8c4cbd9018008a4b8af, type: 2}

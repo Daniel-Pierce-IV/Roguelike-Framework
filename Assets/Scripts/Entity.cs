@@ -19,4 +19,9 @@ public class Entity
 	{
 		return new Vector3Int(x, y, 0);
 	}
+
+	public Vector2Int GetRogueMapPosition()
+	{
+		return new Vector2Int(x, y);
+	}
 }

@@ -151,10 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9fa4678440b51a4097edf9df05a28e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rogueMapData: {fileID: 11400000, guid: 826ffb6a3c90d614ea746e802cb2bbb6, type: 2}
   playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
   tilemap: {fileID: 1722414695}
-  floorTile: {fileID: 11400000, guid: 87f69bd50633b6f459ac4ad036ba4129, type: 2}
-  wallTile: {fileID: 11400000, guid: 34613ef34896a8c4cbd9018008a4b8af, type: 2}
 --- !u!4 &781253240
 Transform:
   m_ObjectHideFlags: 0

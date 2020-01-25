@@ -1,4 +1,6 @@
-﻿class Room
+﻿using UnityEngine;
+
+class Room
 {
 	public int x;
 	public int y;
@@ -17,5 +19,20 @@
 		this.height = height;
 		this.x2 = x + width;
 		this.y2 = y + height;
+	}
+
+	public Vector2Int CenterPoint()
+	{
+		return new Vector2Int(
+			(x + x2) / 2,
+			(y + y2) / 2);
+	}
+
+	public bool Intersects(Room room)
+	{
+		// Determines intersections by comparing start/end coordinates for both rooms
+		return (
+			x <= room.x2 && x2 >= room.x &&
+			y <= room.y2 && y2 >= room.y);
 	}
 }
