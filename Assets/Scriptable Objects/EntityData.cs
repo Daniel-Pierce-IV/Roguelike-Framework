@@ -8,4 +8,6 @@ using UnityEngine.Tilemaps;
 public class EntityData : ScriptableObject
 {
 	public Tile spriteTile;
+	public new string name;
+	public bool blocksMovement;
 }

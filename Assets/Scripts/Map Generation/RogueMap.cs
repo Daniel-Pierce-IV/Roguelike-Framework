@@ -43,12 +43,36 @@ public class RogueMap
 
 		if (!destinationTile.data.blocksMovement)
 		{
-			entities[0].x = destination.x;
-			entities[0].y = destination.y;
-			UpdateCameraPosition();
+			Entity entity = GetEntityAt(destination);
+
+			if (entity != null && entity.data.blocksMovement)
+			{
+				Debug.Log("You attack the " + entity.data.name + "!");
+			}
+			else
+			{
+				entities[0].x = destination.x;
+				entities[0].y = destination.y;
+				UpdateCameraPosition();
+			}
+
+			RogueGameManager.gameState = GameStates.EnemyTurn;
 		}
 
 		RenderToTilemap();
+	}
+
+	public void SimulateEntities()
+	{
+		foreach (var entity in entities)
+		{
+			if (entity.data != playerData)
+			{
+				Debug.Log("The " + entity.data.name + " ponders its own existence.");
+			}
+		}
+
+		RogueGameManager.gameState = GameStates.PlayerTurn;
 	}
 
 	public void RenderToTilemap()
@@ -233,5 +257,18 @@ public class RogueMap
 				}
 			}
 		}
+	}
+
+	Entity GetEntityAt(Vector2Int position)
+	{
+		foreach (var entity in entities)
+		{
+			if (entity.GetRogueMapPosition() == position)
+			{
+				return entity;
+			}
+		}
+
+		return null;
 	}
 }

@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class RogueGameManager : MonoBehaviour
 {
+	public static GameStates gameState = GameStates.PlayerTurn;
+
 	[SerializeField] RogueMapData rogueMapData;
 	[SerializeField] EntityData playerData = null;
 	[SerializeField] Tilemap tilemap = null;
@@ -20,6 +22,17 @@ public class RogueGameManager : MonoBehaviour
 
 	public void MovePlayer(Vector2Int direction)
 	{
-		rogueMap.MovePlayer(direction);
+		if (gameState == GameStates.PlayerTurn)
+		{
+			rogueMap.MovePlayer(direction);
+		}
+
+		rogueMap.SimulateEntities();
 	}
+}
+
+public enum GameStates
+{
+	PlayerTurn,
+	EnemyTurn
 }
