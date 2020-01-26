@@ -36,6 +36,7 @@ class Room
 			y <= room.y2 && y2 >= room.y);
 	}
 
+	// Return a random point from within the room
 	public Vector2Int RandomPosition()
 	{
 		return new Vector2Int(

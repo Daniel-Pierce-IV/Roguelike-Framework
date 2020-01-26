@@ -15,12 +15,12 @@ public class Entity
 		this.y = y;
 	}
 
-	public Vector3Int GetTilemapPosition()
+	public Vector3Int TilemapPosition()
 	{
 		return new Vector3Int(x, y, 0);
 	}
 
-	public Vector2Int GetRogueMapPosition()
+	public Vector2Int RogueMapPosition()
 	{
 		return new Vector2Int(x, y);
 	}

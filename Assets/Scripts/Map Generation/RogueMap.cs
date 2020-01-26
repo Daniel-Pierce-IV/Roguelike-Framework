@@ -38,7 +38,7 @@ public class RogueMap
 
 	public void MovePlayer(Vector2Int direction)
 	{
-		Vector2Int destination = entities[0].GetRogueMapPosition() + direction;
+		Vector2Int destination = entities[0].RogueMapPosition() + direction;
 		RogueTile destinationTile = rogueTiles[destination.x, destination.y];
 
 		if (!destinationTile.data.blocksMovement)
@@ -90,7 +90,7 @@ public class RogueMap
 		foreach (Entity entity in entities)
 		{
 			tilemap.SetTile(
-					entity.GetTilemapPosition(),
+					entity.TilemapPosition(),
 					entity.data.spriteTile);
 		}
 	}
@@ -240,7 +240,7 @@ public class RogueMap
 				// Ensure possible spawn point isn't already occupied
 				foreach (var entity in entities)
 				{
-					if (entity.GetRogueMapPosition() == spawnPoint)
+					if (entity.RogueMapPosition() == spawnPoint)
 					{
 						shouldSpawn = false;
 						break;
@@ -263,7 +263,7 @@ public class RogueMap
 	{
 		foreach (var entity in entities)
 		{
-			if (entity.GetRogueMapPosition() == position)
+			if (entity.RogueMapPosition() == position)
 			{
 				return entity;
 			}
