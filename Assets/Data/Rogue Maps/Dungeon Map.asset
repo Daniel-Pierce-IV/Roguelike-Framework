@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 063d761d8fb72524e81e4508be90a41c, type: 3}
-  m_Name: DungeonMap
+  m_Script: {fileID: 11500000, guid: 6650bedc57b08b44a9c4506c04240e2b, type: 3}
+  m_Name: Dungeon Map
   m_EditorClassIdentifier: 
   mapWidth: 50
   mapHeight: 50
@@ -19,8 +19,10 @@ MonoBehaviour:
   minRoomHeight: 5
   maxRoomHeight: 10
   maxRoomsPerMap: 30
+  onMapChange: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
   floorTileData: {fileID: 11400000, guid: 87f69bd50633b6f459ac4ad036ba4129, type: 2}
   wallTileData: {fileID: 11400000, guid: 34613ef34896a8c4cbd9018008a4b8af, type: 2}
+  playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
   maxMonstersPerRoom: 5
   monstersToSpawn:
   - {fileID: 11400000, guid: dada6ef1bb88f9e408ef3f2ef6529e6e, type: 2}

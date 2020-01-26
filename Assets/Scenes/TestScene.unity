@@ -151,9 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9fa4678440b51a4097edf9df05a28e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rogueMapData: {fileID: 11400000, guid: 826ffb6a3c90d614ea746e802cb2bbb6, type: 2}
-  playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
-  onMapChanged: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
+  rogueMap: {fileID: 11400000, guid: 2e2334f7e4faf224a91e65242e0b1f50, type: 2}
 --- !u!4 &781253240
 Transform:
   m_ObjectHideFlags: 0
@@ -330,5 +328,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8009060197513251108, guid: 06b6043179bc252459741e7f435c7ac8,
+        type: 3}
+      propertyPath: rogueMap
+      value: 
+      objectReference: {fileID: 11400000, guid: 2e2334f7e4faf224a91e65242e0b1f50,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06b6043179bc252459741e7f435c7ac8, type: 3}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6650bedc57b08b44a9c4506c04240e2b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - onMapChange: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
+  - floorTileData: {instanceID: 0}
+  - wallTileData: {instanceID: 0}
+  - playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

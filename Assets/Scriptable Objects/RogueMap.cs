@@ -1,36 +1,35 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RogueMap
+[CreateAssetMenu(fileName = "New Rogue Map", menuName = "Rogue Map")]
+public class RogueMap : ScriptableObject
 {
-	public static RogueTile[,] rogueTiles;
-	public static List<Entity> entities;
+	public int mapWidth;
+	public int mapHeight;
 
-	RogueMapData mapData;
-	EntityData playerData;
+	public int minRoomWidth;
+	public int maxRoomWidth;
+	public int minRoomHeight;
+	public int maxRoomHeight;
+
+	public int maxRoomsPerMap;
+
+	// NOTE: default value set in inspector
+	public GameEvent onMapChange;
+
+	public RogueTileData floorTileData;
+	public RogueTileData wallTileData;
+
+	// NOTE: default value set in inspector
+	public EntityData playerData;
+
+	public int maxMonstersPerRoom;
+	public EntityData[] monstersToSpawn;
+
+	public RogueTile[,] rogueTiles;
+	public List<Entity> entities;
+	
 	List<Room> rooms;
-	GameEvent onMapChange;
-
-	public RogueMap(EntityData playerData, GameEvent onMapChange)
-	{
-		this.playerData = playerData;
-		this.onMapChange = onMapChange;
-	}
-
-	public void GenerateMap(RogueMapData mapData)
-	{
-		this.mapData = mapData;
-		rooms = new List<Room>();
-		entities = new List<Entity>();
-
-		InitializeMap();
-		CreateRooms();
-		BuildRooms();
-		BuildTunnels();
-		InitializePlayer();
-		SpawnMonsters();
-		onMapChange.Broadcast();
-	}
 
 	public void MovePlayer(Vector2Int direction)
 	{
@@ -69,31 +68,44 @@ public class RogueMap
 		RogueGameManager.gameState = GameStates.PlayerTurn;
 	}
 
+	public void GenerateMap()
+	{
+		InitializeMap();
+		CreateRooms();
+		BuildRooms();
+		BuildTunnels();
+		SpawnPlayer();
+		SpawnMonsters();
+		onMapChange.Broadcast();
+	}
+
 	void InitializeMap()
 	{
-		rogueTiles = new RogueTile[mapData.mapWidth, mapData.mapHeight];
+		rogueTiles = new RogueTile[mapWidth, mapHeight];
+		rooms = new List<Room>();
+		entities = new List<Entity>();
 
 		// The map is initially filled with walls
-		for (int x = 0; x < mapData.mapWidth; x++)
+		for (int x = 0; x < mapWidth; x++)
 		{
-			for (int y = 0; y < mapData.mapHeight; y++)
+			for (int y = 0; y < mapHeight; y++)
 			{
-				rogueTiles[x, y] = new RogueTile(mapData.wallTileData, x, y);
+				rogueTiles[x, y] = new RogueTile(wallTileData, x, y);
 			}
 		}
 	}
 
 	void CreateRooms()
 	{
-		for (int i = 0; i < mapData.maxRoomsPerMap; i++)
+		for (int i = 0; i < maxRoomsPerMap; i++)
 		{
 			// Random.Range second argument is non-inclusive, so we add 1 to width and height
-			int width = Random.Range(mapData.minRoomWidth, mapData.maxRoomWidth + 1);
-			int height = Random.Range(mapData.minRoomHeight, mapData.maxRoomHeight + 1);
+			int width = Random.Range(minRoomWidth, maxRoomWidth + 1);
+			int height = Random.Range(minRoomHeight, maxRoomHeight + 1);
 
 			// Random map position, avoiding going past map boundaries
-			int x = Random.Range(0, mapData.mapWidth - width);
-			int y = Random.Range(0, mapData.mapHeight - height);
+			int x = Random.Range(0, mapWidth - width);
+			int y = Random.Range(0, mapHeight - height);
 
 			Room newRoom = new Room(x, y, width, height);
 
@@ -113,20 +125,10 @@ public class RogueMap
 			{
 				for (int y = room.y + 1; y < room.y2; y++)
 				{
-					UpdateTile(x, y, mapData.floorTileData);
+					UpdateTile(x, y, floorTileData);
 				}
 			}
 		}
-	}
-
-	// Spawn the player in the center of the room created first
-	void InitializePlayer()
-	{
-		entities.Add(
-			new Entity(
-				playerData,
-				rooms[0].CenterPoint().x,
-				rooms[0].CenterPoint().y));
 	}
 
 	void BuildTunnels()
@@ -158,7 +160,7 @@ public class RogueMap
 	{
 		for (int x = Mathf.Min(x1, x2); x <= Mathf.Max(x1, x2); x++)
 		{
-			UpdateTile(x, y, mapData.floorTileData);
+			UpdateTile(x, y, floorTileData);
 		}
 	}
 
@@ -166,15 +168,25 @@ public class RogueMap
 	{
 		for (int y = Mathf.Min(y1, y2); y <= Mathf.Max(y1, y2); y++)
 		{
-			UpdateTile(x, y, mapData.floorTileData);
+			UpdateTile(x, y, floorTileData);
 		}
+	}
+
+	// Spawn the player in the center of the room created first
+	void SpawnPlayer()
+	{
+		entities.Add(
+			new Entity(
+				playerData,
+				rooms[0].CenterPoint().x,
+				rooms[0].CenterPoint().y));
 	}
 
 	void SpawnMonsters()
 	{
 		foreach (var room in rooms)
 		{
-			int monsterCount = Random.Range(0, mapData.maxMonstersPerRoom + 1);
+			int monsterCount = Random.Range(0, maxMonstersPerRoom + 1);
 
 			for (int i = 0; i < monsterCount; i++)
 			{
@@ -183,8 +195,8 @@ public class RogueMap
 				// Ensure possible spawn point isn't already occupied
 				if (GetEntityAt(spawnPoint) == null)
 				{
-					int monsterIndex = Random.Range(0, mapData.monstersToSpawn.Length);
-					EntityData monsterData = mapData.monstersToSpawn[monsterIndex];
+					int monsterIndex = Random.Range(0, monstersToSpawn.Length);
+					EntityData monsterData = monstersToSpawn[monsterIndex];
 
 					Entity monster = new Entity(monsterData, spawnPoint.x, spawnPoint.y);
 					entities.Add(monster);

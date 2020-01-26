@@ -6,16 +6,11 @@ public class RogueGameManager : MonoBehaviour
 {
 	public static GameStates gameState = GameStates.PlayerTurn;
 
-	[SerializeField] RogueMapData rogueMapData;
-	[SerializeField] EntityData playerData = null;
-	[SerializeField] GameEvent onMapChanged;
-
-	RogueMap rogueMap;
+	[SerializeField] RogueMap rogueMap;
 
 	void Start()
 	{
-		rogueMap = new RogueMap(playerData, onMapChanged);
-		rogueMap.GenerateMap(rogueMapData);
+		rogueMap.GenerateMap();
 	}
 
 	public void MovePlayer(Vector2Int direction)
