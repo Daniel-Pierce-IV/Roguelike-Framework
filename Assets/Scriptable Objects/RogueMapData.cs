@@ -8,16 +8,16 @@ public class RogueMapData : ScriptableObject
 	public int mapWidth;
 	public int mapHeight;
 
-	public int minimumRoomWidth;
-	public int maximumRoomWidth;
-	public int minimumRoomHeight;
-	public int maximumRoomHeight;
+	public int minRoomWidth;
+	public int maxRoomWidth;
+	public int minRoomHeight;
+	public int maxRoomHeight;
 
-	public int maximumNumberOfRooms;
+	public int maxRoomsPerMap;
 
 	public RogueTileData floorTileData;
 	public RogueTileData wallTileData;
 
-	public int maximumMonstersPerRoom;
+	public int maxMonstersPerRoom;
 	public EntityData[] monstersToSpawn;
 }

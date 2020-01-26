@@ -111,11 +111,11 @@ public class RogueMap
 
 	void CreateRooms()
 	{
-		for (int i = 0; i < mapData.maximumNumberOfRooms; i++)
+		for (int i = 0; i < mapData.maxRoomsPerMap; i++)
 		{
 			// Random.Range second argument is non-inclusive, so we add 1 to width and height
-			int width = Random.Range(mapData.minimumRoomWidth, mapData.maximumRoomWidth + 1);
-			int height = Random.Range(mapData.minimumRoomHeight, mapData.maximumRoomHeight + 1);
+			int width = Random.Range(mapData.minRoomWidth, mapData.maxRoomWidth + 1);
+			int height = Random.Range(mapData.minRoomHeight, mapData.maxRoomHeight + 1);
 
 			// Random map position, avoiding going past map boundaries
 			int x = Random.Range(0, mapData.mapWidth - width);
@@ -230,7 +230,7 @@ public class RogueMap
 	{
 		foreach (var room in rooms)
 		{
-			int monsterCount = Random.Range(0, mapData.maximumMonstersPerRoom + 1);
+			int monsterCount = Random.Range(0, mapData.maxMonstersPerRoom + 1);
 
 			for (int i = 0; i < monsterCount; i++)
 			{
