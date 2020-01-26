@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Slime
   m_EditorClassIdentifier: 
   spriteTile: {fileID: 11400000, guid: f3470e1305e2fbb4e949940375517e89, type: 2}
+  name: Slime
+  blocksMovement: 1

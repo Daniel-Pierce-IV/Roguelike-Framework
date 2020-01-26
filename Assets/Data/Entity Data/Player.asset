@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   spriteTile: {fileID: 11400000, guid: 7793bf2890580f04ea0f795e88137d52, type: 2}
+  name: You
+  blocksMovement: 1

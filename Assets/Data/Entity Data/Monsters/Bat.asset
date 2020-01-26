@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: 
   spriteTile: {fileID: 11400000, guid: ed13f8306bdbbc343a5427b02cca0e49, type: 2}
+  name: Bat
+  blocksMovement: 1
