@@ -1,25 +1,20 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class RogueMap
 {
+	public static RogueTile[,] rogueTiles;
+	public static List<Entity> entities;
+
 	RogueMapData mapData;
-	RogueTile[,] rogueTiles;
-
-	Tilemap tilemap;
-	List<Room> rooms;
-
 	EntityData playerData;
-	List<Entity> entities;
+	List<Room> rooms;
+	GameEvent onMapChange;
 
-	float cameraXOffset = -0.5f;
-	float cameraYOffset = 0.75f;
-
-	public RogueMap(Tilemap tilemap, EntityData playerData)
+	public RogueMap(EntityData playerData, GameEvent onMapChange)
 	{
-		this.tilemap = tilemap;
 		this.playerData = playerData;
+		this.onMapChange = onMapChange;
 	}
 
 	public void GenerateMap(RogueMapData mapData)
@@ -34,6 +29,7 @@ public class RogueMap
 		BuildTunnels();
 		InitializePlayer();
 		SpawnMonsters();
+		onMapChange.Broadcast();
 	}
 
 	public void MovePlayer(Vector2Int direction)
@@ -53,13 +49,11 @@ public class RogueMap
 			{
 				entities[0].x = destination.x;
 				entities[0].y = destination.y;
-				UpdateCameraPosition();
+				onMapChange.Broadcast();
 			}
 
 			RogueGameManager.gameState = GameStates.EnemyTurn;
 		}
-
-		RenderToTilemap();
 	}
 
 	public void SimulateEntities()
@@ -73,26 +67,6 @@ public class RogueMap
 		}
 
 		RogueGameManager.gameState = GameStates.PlayerTurn;
-	}
-
-	public void RenderToTilemap()
-	{
-		for (int x = 0; x < rogueTiles.GetLength(0); x++)
-		{
-			for (int y = 0; y < rogueTiles.GetLength(1); y++)
-			{
-				tilemap.SetTile(
-					rogueTiles[x, y].GetTilemapPosition(),
-					rogueTiles[x, y].data.spriteTile);
-			}
-		}
-
-		foreach (Entity entity in entities)
-		{
-			tilemap.SetTile(
-					entity.TilemapPosition(),
-					entity.data.spriteTile);
-		}
 	}
 
 	void InitializeMap()
@@ -124,6 +98,7 @@ public class RogueMap
 			Room newRoom = new Room(x, y, width, height);
 			bool isValid = true;
 
+			// TODO overload Room.Intersects to accept a list of rooms to check against
 			foreach (Room otherRoom in rooms)
 			{
 				if (newRoom.Intersects(otherRoom))
@@ -154,11 +129,6 @@ public class RogueMap
 		}
 	}
 
-	void UpdateTile(int x, int y, RogueTileData rogueTileData)
-	{
-		rogueTiles[x, y].data = rogueTileData;
-	}
-
 	// Spawn the player in the center of the room created first
 	void InitializePlayer()
 	{
@@ -167,17 +137,6 @@ public class RogueMap
 				playerData,
 				rooms[0].CenterPoint().x,
 				rooms[0].CenterPoint().y));
-
-		UpdateCameraPosition();
-	}
-
-	// Set camera's position to match player position
-	void UpdateCameraPosition()
-	{
-		Camera.main.transform.position = new Vector3(
-				entities[0].x + cameraXOffset,
-				entities[0].y + cameraYOffset,
-				Camera.main.transform.position.z);
 	}
 
 	void BuildTunnels()
@@ -205,11 +164,6 @@ public class RogueMap
 		}
 	}
 
-	bool RandomBool()
-	{
-		return Random.Range(0, 2) == 0;
-	}
-
 	void CreateHorizontalTunnel(int x1, int x2, int y)
 	{
 		for (int x = Mathf.Min(x1, x2); x <= Mathf.Max(x1, x2); x++)
@@ -234,20 +188,10 @@ public class RogueMap
 
 			for (int i = 0; i < monsterCount; i++)
 			{
-				bool shouldSpawn = true;
 				Vector2Int spawnPoint = room.RandomPosition();
 
 				// Ensure possible spawn point isn't already occupied
-				foreach (var entity in entities)
-				{
-					if (entity.RogueMapPosition() == spawnPoint)
-					{
-						shouldSpawn = false;
-						break;
-					}
-				}
-
-				if (shouldSpawn)
+				if (GetEntityAt(spawnPoint) == null)
 				{
 					int monsterIndex = Random.Range(0, mapData.monstersToSpawn.Length);
 					EntityData monsterData = mapData.monstersToSpawn[monsterIndex];
@@ -257,6 +201,11 @@ public class RogueMap
 				}
 			}
 		}
+	}
+
+	void UpdateTile(int x, int y, RogueTileData rogueTileData)
+	{
+		rogueTiles[x, y].data = rogueTileData;
 	}
 
 	Entity GetEntityAt(Vector2Int position)
@@ -270,5 +219,10 @@ public class RogueMap
 		}
 
 		return null;
+	}
+
+	bool RandomBool()
+	{
+		return Random.Range(0, 2) == 0;
 	}
 }
