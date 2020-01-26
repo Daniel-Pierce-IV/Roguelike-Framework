@@ -96,18 +96,8 @@ public class RogueMap
 			int y = Random.Range(0, mapData.mapHeight - height);
 
 			Room newRoom = new Room(x, y, width, height);
-			bool isValid = true;
 
-			// TODO overload Room.Intersects to accept a list of rooms to check against
-			foreach (Room otherRoom in rooms)
-			{
-				if (newRoom.Intersects(otherRoom))
-				{
-					isValid = false;
-				}
-			}
-
-			if (isValid)
+			if (!newRoom.Intersects(rooms))
 			{
 				rooms.Add(newRoom);
 			}

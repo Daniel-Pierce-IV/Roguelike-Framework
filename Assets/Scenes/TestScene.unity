@@ -153,8 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rogueMapData: {fileID: 11400000, guid: 826ffb6a3c90d614ea746e802cb2bbb6, type: 2}
   playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
-  tilemap: {fileID: 1722414695}
-  mapChanged: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
+  onMapChanged: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
 --- !u!4 &781253240
 Transform:
   m_ObjectHideFlags: 0
@@ -264,12 +263,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1839735485 &1722414695 stripped
-Tilemap:
-  m_CorrespondingSourceObject: {fileID: 8009060197351536867, guid: 06b6043179bc252459741e7f435c7ac8,
-    type: 3}
-  m_PrefabInstance: {fileID: 8009060196707094148}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8009060196707094148
 PrefabInstance:
   m_ObjectHideFlags: 0

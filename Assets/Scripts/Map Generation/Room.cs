@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 class Room
 {
@@ -28,19 +29,33 @@ class Room
 			(y + y2) / 2);
 	}
 
-	public bool Intersects(Room room)
-	{
-		// Determines intersections by comparing start/end coordinates for both rooms
-		return (
-			x <= room.x2 && x2 >= room.x &&
-			y <= room.y2 && y2 >= room.y);
-	}
-
 	// Return a random point from within the room
 	public Vector2Int RandomPosition()
 	{
 		return new Vector2Int(
 			Random.Range(x + 1, x2),
 			Random.Range(y + 1, y2));
+	}
+
+	// Determines intersections by comparing start/end coordinates for both rooms
+	public bool Intersects(Room room)
+	{
+		return (
+			x <= room.x2 && x2 >= room.x &&
+			y <= room.y2 && y2 >= room.y);
+	}
+
+	public bool Intersects(List<Room> rooms)
+	{
+		foreach (Room room in rooms)
+		{
+			if (x <= room.x2 && x2 >= room.x && 
+				y <= room.y2 && y2 >= room.y)
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
