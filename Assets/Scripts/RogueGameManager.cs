@@ -13,11 +13,14 @@ public class RogueGameManager : MonoBehaviour
 
 	RogueMap rogueMap;
 
+	[SerializeField] GameEvent mapChanged;
+
 	void Start()
 	{
 		rogueMap = new RogueMap(tilemap, playerData);
 		rogueMap.GenerateMap(rogueMapData);
 		rogueMap.RenderToTilemap();
+		mapChanged.Broadcast();
 	}
 
 	public void MovePlayer(Vector2Int direction)
@@ -25,6 +28,7 @@ public class RogueGameManager : MonoBehaviour
 		if (gameState == GameStates.PlayerTurn)
 		{
 			rogueMap.MovePlayer(direction);
+			mapChanged.Broadcast();
 		}
 
 		rogueMap.SimulateEntities();

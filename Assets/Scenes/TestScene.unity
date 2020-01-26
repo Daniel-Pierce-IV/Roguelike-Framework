@@ -154,6 +154,7 @@ MonoBehaviour:
   rogueMapData: {fileID: 11400000, guid: 826ffb6a3c90d614ea746e802cb2bbb6, type: 2}
   playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}
   tilemap: {fileID: 1722414695}
+  mapChanged: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
 --- !u!4 &781253240
 Transform:
   m_ObjectHideFlags: 0
@@ -414,6 +415,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1879902111}
   - component: {fileID: 1879902110}
+  - component: {fileID: 1879902112}
+  - component: {fileID: 1879902109}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -421,6 +424,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1879902109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879902108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 095825628bda9944cb73e343009610cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
+  responseToGameEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1879902112}
+        m_MethodName: RenderMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!156049354 &1879902110
 Grid:
   m_ObjectHideFlags: 0
@@ -448,3 +478,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1879902112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879902108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f8a26bc3cfb1e6428387b2dd7794483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
