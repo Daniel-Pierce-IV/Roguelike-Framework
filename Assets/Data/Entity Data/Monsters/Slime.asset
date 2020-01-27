@@ -15,3 +15,8 @@ MonoBehaviour:
   spriteTile: {fileID: 11400000, guid: f3470e1305e2fbb4e949940375517e89, type: 2}
   name: Slime
   blocksMovement: 1
+  stats:
+    maxHp: 2
+    power: 1
+    defense: 0
+  ai: {fileID: 11400000, guid: b8be6ac1b604bcc40a8cd789032b3db6, type: 2}

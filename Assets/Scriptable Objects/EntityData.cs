@@ -10,4 +10,6 @@ public class EntityData : ScriptableObject
 	public Tile spriteTile;
 	public new string name;
 	public bool blocksMovement;
+	public Stats stats;
+	public RogueAI ai;
 }

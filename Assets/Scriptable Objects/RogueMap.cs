@@ -33,7 +33,7 @@ public class RogueMap : ScriptableObject
 
 	public void MovePlayer(Vector2Int direction)
 	{
-		Vector2Int destination = entities[0].RogueMapPosition() + direction;
+		Vector2Int destination = entities[0].Position + direction;
 		RogueTile destinationTile = rogueTiles[destination.x, destination.y];
 
 		if (!destinationTile.data.blocksMovement)
@@ -46,8 +46,7 @@ public class RogueMap : ScriptableObject
 			}
 			else
 			{
-				entities[0].x = destination.x;
-				entities[0].y = destination.y;
+				entities[0].Position = destination;
 				onMapChange.Broadcast();
 			}
 
@@ -59,9 +58,9 @@ public class RogueMap : ScriptableObject
 	{
 		foreach (var entity in entities)
 		{
-			if (entity.data != playerData)
+			if (entity.CanAct())
 			{
-				Debug.Log("The " + entity.data.name + " ponders its own existence.");
+				entity.Act();
 			}
 		}
 
@@ -175,11 +174,7 @@ public class RogueMap : ScriptableObject
 	// Spawn the player in the center of the room created first
 	void SpawnPlayer()
 	{
-		entities.Add(
-			new Entity(
-				playerData,
-				rooms[0].CenterPoint().x,
-				rooms[0].CenterPoint().y));
+		entities.Add(new Entity(playerData, rooms[0].CenterPoint(), this));
 	}
 
 	void SpawnMonsters()
@@ -197,8 +192,7 @@ public class RogueMap : ScriptableObject
 				{
 					int monsterIndex = Random.Range(0, monstersToSpawn.Length);
 					EntityData monsterData = monstersToSpawn[monsterIndex];
-
-					Entity monster = new Entity(monsterData, spawnPoint.x, spawnPoint.y);
+					Entity monster = new Entity(monsterData, spawnPoint, this);
 					entities.Add(monster);
 				}
 			}
@@ -214,7 +208,7 @@ public class RogueMap : ScriptableObject
 	{
 		foreach (var entity in entities)
 		{
-			if (entity.RogueMapPosition() == position)
+			if (entity.Position == position)
 			{
 				return entity;
 			}

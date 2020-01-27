@@ -15,3 +15,8 @@ MonoBehaviour:
   spriteTile: {fileID: 11400000, guid: ed13f8306bdbbc343a5427b02cca0e49, type: 2}
   name: Bat
   blocksMovement: 1
+  stats:
+    maxHp: 2
+    power: 2
+    defense: 0
+  ai: {fileID: 11400000, guid: b8be6ac1b604bcc40a8cd789032b3db6, type: 2}

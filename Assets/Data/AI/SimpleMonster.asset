@@ -9,14 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4564a39605d6e9d4db0972465b6edb86, type: 3}
-  m_Name: Player
+  m_Script: {fileID: 11500000, guid: bfbbd1852dcb13741a28fc768b775e64, type: 3}
+  m_Name: SimpleMonster
   m_EditorClassIdentifier: 
-  spriteTile: {fileID: 11400000, guid: 7793bf2890580f04ea0f795e88137d52, type: 2}
-  name: You
-  blocksMovement: 1
-  stats:
-    maxHp: 10
-    power: 1
-    defense: 0
-  ai: {fileID: 0}
