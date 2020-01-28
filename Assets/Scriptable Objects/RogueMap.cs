@@ -28,30 +28,78 @@ public class RogueMap : ScriptableObject
 
 	public RogueTile[,] rogueTiles;
 	public List<Entity> entities;
+
+	public Entity Player
+	{
+		get { return entities[0]; }
+	}
 	
 	List<Room> rooms;
 
-	public void MovePlayer(Vector2Int direction)
+	public void MoveEntityToPosition(Entity entity, Vector2Int position)
 	{
-		Vector2Int destination = entities[0].Position + direction;
-		RogueTile destinationTile = rogueTiles[destination.x, destination.y];
+		entity.Position = position;
+		onMapChange.Broadcast();
+	}
 
-		if (!destinationTile.data.blocksMovement)
+	public void AttackEntity(Entity attacker, Entity defender)
+	{
+		if (attacker == Player)
 		{
-			Entity entity = GetEntityAt(destination);
-
-			if (entity != null && entity.data.blocksMovement)
-			{
-				Debug.Log("You attack the " + entity.data.name + "!");
-			}
-			else
-			{
-				entities[0].Position = destination;
-				onMapChange.Broadcast();
-			}
-
-			RogueGameManager.gameState = GameStates.EnemyTurn;
+			Debug.Log("You attack the " + defender.data.name + "!");
 		}
+		else
+		{
+			Debug.Log("The " + attacker.data.name + " attacks you!");
+		}
+	}
+
+	public List<Entity> EntitiesAtPosition(Vector2Int position)
+	{
+		List<Entity> discoveredEntities = new List<Entity>();
+
+		foreach (var entity in entities)
+		{
+			if (entity.Position == position)
+			{
+				discoveredEntities.Add(entity);
+			}
+		}
+
+		return discoveredEntities;
+	}
+
+	public List<Entity> AttackableEntitiesAtPosition(Vector2Int position)
+	{
+		List<Entity> discoveredEntities = new List<Entity>();
+
+		foreach (var entity in entities)
+		{
+			if (entity.Position == position && entity.data.stats != null)
+			{
+				discoveredEntities.Add(entity);
+			}
+		}
+
+		return discoveredEntities;
+	}
+
+	public bool PositionCanBeMovedTo(Vector2Int position)
+	{
+		if (rogueTiles[position.x, position.y].data.blocksMovement)
+		{
+			return false;
+		}
+
+		foreach (var entity in EntitiesAtPosition(position))
+		{
+			if (entity.data.blocksMovement)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public void SimulateEntities()
@@ -137,7 +185,6 @@ public class RogueMap : ScriptableObject
 
 		for (int i = 1; i < rooms.Count; i++)
 		{
-
 			center1 = rooms[i - 1].CenterPoint();
 			center2 = rooms[i].CenterPoint();
 
@@ -188,7 +235,7 @@ public class RogueMap : ScriptableObject
 				Vector2Int spawnPoint = room.RandomPosition();
 
 				// Ensure possible spawn point isn't already occupied
-				if (GetEntityAt(spawnPoint) == null)
+				if (EntitiesAtPosition(spawnPoint).Count == 0)
 				{
 					int monsterIndex = Random.Range(0, monstersToSpawn.Length);
 					EntityData monsterData = monstersToSpawn[monsterIndex];
@@ -202,19 +249,6 @@ public class RogueMap : ScriptableObject
 	void UpdateTile(int x, int y, RogueTileData rogueTileData)
 	{
 		rogueTiles[x, y].data = rogueTileData;
-	}
-
-	Entity GetEntityAt(Vector2Int position)
-	{
-		foreach (var entity in entities)
-		{
-			if (entity.Position == position)
-			{
-				return entity;
-			}
-		}
-
-		return null;
 	}
 
 	bool RandomBool()

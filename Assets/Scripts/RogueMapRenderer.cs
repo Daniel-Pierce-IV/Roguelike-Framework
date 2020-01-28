@@ -38,8 +38,8 @@ public class RogueMapRenderer : MonoBehaviour
 	void UpdateCameraPosition()
 	{
 		Camera.main.transform.position = new Vector3(
-				rogueMap.entities[0].x + cameraXOffset,
-				rogueMap.entities[0].y + cameraYOffset,
+				rogueMap.Player.x + cameraXOffset,
+				rogueMap.Player.y + cameraYOffset,
 				Camera.main.transform.position.z);
 	}
 }
