@@ -7,6 +7,13 @@ public class Entity
 	public EntityData data;
 	public int x;
 	public int y;
+	public int CurHp
+	{
+		get { return curHp; }
+	}
+
+	int curHp;
+
 
 	public Vector2Int Position
 	{
@@ -22,6 +29,7 @@ public class Entity
 		this.data = entityData;
 		this.Position = position;
 		this.rogueMap = rogueMap;
+		curHp = data.stats.maxHp;
 	}
 
 	public Vector3Int TilemapPosition()

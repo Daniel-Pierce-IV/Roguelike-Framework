@@ -11,7 +11,7 @@ public class RogueAI : ScriptableObject
 
 		Vector2Int direction = rogueMap.Player.Position - entity.Position;
 
-		if (direction.magnitude < attackRange)
+		if (direction.magnitude < attackRange && rogueMap.Player.CurHp > 0)
 		{
 			rogueMap.AttackEntity(entity, rogueMap.Player);
 		}
@@ -24,7 +24,6 @@ public class RogueAI : ScriptableObject
 				rogueMap.MoveEntityToPosition(entity, newPosition);
 			}
 		}
-		//Debug.Log("The " + entity.data.name + " is itching for a fight.");
 	}
 
 	// "Normalize" the direction to integer values (best approximation)
