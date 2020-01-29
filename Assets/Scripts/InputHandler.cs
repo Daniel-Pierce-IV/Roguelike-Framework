@@ -30,5 +30,22 @@ public class InputHandler : MonoBehaviour
 		{
 			manager.MovePlayer(new Vector2Int(1, 0));
 		}
+		else if (Input.GetKeyDown(KeyCode.E))
+		{
+			manager.MovePlayer(new Vector2Int(-1, 1));
+		}
+		else if (Input.GetKeyDown(KeyCode.R))
+		{
+			manager.MovePlayer(new Vector2Int(1, 1));
+		}
+		else if (Input.GetKeyDown(KeyCode.X))
+		{
+			manager.MovePlayer(new Vector2Int(-1, -1));
+		}
+		else if (Input.GetKeyDown(KeyCode.C))
+		{
+			manager.MovePlayer(new Vector2Int(1, -1));
+		}
+
 	}
 }
