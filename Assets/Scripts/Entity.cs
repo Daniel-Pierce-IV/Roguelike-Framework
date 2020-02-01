@@ -7,13 +7,13 @@ public class Entity
 	public EntityData data;
 	public int x;
 	public int y;
+	public List<Vector2Int> travelPath = new List<Vector2Int>();
 	public int CurHp
 	{
 		get { return curHp; }
 	}
 
 	int curHp;
-
 
 	public Vector2Int Position
 	{

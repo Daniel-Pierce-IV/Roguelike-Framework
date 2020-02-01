@@ -35,11 +35,24 @@ public class RogueMap : ScriptableObject
 	}
 	
 	List<Room> rooms;
+	public DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm();
 
 	public void MoveEntityToPosition(Entity entity, Vector2Int position)
 	{
 		entity.Position = position;
 		onMapChange.Broadcast();
+	}
+
+	public void MoveEntityAlongPath(Entity entity)
+	{
+		Vector2Int newPosition = entity.travelPath[0];
+		entity.travelPath.RemoveAt(0);
+
+		if (PositionCanBeMovedTo(newPosition))
+		{
+			entity.Position = newPosition;
+			onMapChange.Broadcast();
+		}
 	}
 
 	public void AttackEntity(Entity attacker, Entity defender)
@@ -123,6 +136,7 @@ public class RogueMap : ScriptableObject
 		BuildTunnels();
 		SpawnPlayer();
 		SpawnMonsters();
+		pathFinder.GenerateNodes(rogueTiles);
 		onMapChange.Broadcast();
 	}
 
@@ -254,5 +268,13 @@ public class RogueMap : ScriptableObject
 	bool RandomBool()
 	{
 		return Random.Range(0, 2) == 0;
+	}
+
+	// Using Chebychev distance
+	public int DistanceToPoint(Vector2Int from, Vector2Int to)
+	{
+		return Mathf.Max(
+			Mathf.Abs(to.x - from.x),
+			Mathf.Abs(to.y - from.y));
 	}
 }

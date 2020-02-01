@@ -6,23 +6,27 @@ public class RogueAI : ScriptableObject
 	public void Act(Entity entity, RogueMap rogueMap)
 	{
 		// Attack player on sight
-		const float sightRange = 5f;
-		const float attackRange = 2f;
+		const int sightRange = 5;
+		const int attackRange = 1;
 
-		Vector2Int direction = rogueMap.Player.Position - entity.Position;
+		int distance = rogueMap.DistanceToPoint(
+			entity.Position,
+			rogueMap.Player.Position);
 
-		if (direction.magnitude < attackRange && rogueMap.Player.CurHp > 0)
+		if (distance <= attackRange && rogueMap.Player.CurHp > 0)
 		{
 			rogueMap.AttackEntity(entity, rogueMap.Player);
 		}
-		else if (direction.magnitude < sightRange)
+		else if (distance <= sightRange)
 		{
-			Vector2Int newPosition = entity.Position + NormalizedVector2Int(direction);
-			
-			if (rogueMap.PositionCanBeMovedTo(newPosition))
-			{
-				rogueMap.MoveEntityToPosition(entity, newPosition);
-			}
+			entity.travelPath = rogueMap.pathFinder.FindPath(
+				entity.Position,
+				rogueMap.Player.Position);
+
+			// Remove first element, since its our current position
+			entity.travelPath.RemoveAt(0);
+
+			rogueMap.MoveEntityAlongPath(entity);
 		}
 	}
 
