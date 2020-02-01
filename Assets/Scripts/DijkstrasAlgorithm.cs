@@ -19,16 +19,17 @@ public class DijkstrasAlgorithm
 	{
 		public Vector2Int position;
 		public float cost = float.PositiveInfinity;
-		public bool isBlocking;
+		public bool isBlocked;
+		public bool isTempBlocked;
 		public bool isExplored = false;
 		public Node parent;
 		public int X { get { return position.x; } }
 		public int Y { get { return position.y; } }
 
-		public Node(Vector2Int position, bool isBlocking)
+		public Node(Vector2Int position, bool isBlocked)
 		{
 			this.position = position;
-			this.isBlocking = isBlocking;
+			this.isBlocked = isBlocked;
 		}
 
 		public List<Vector2Int> PositionChain()
@@ -52,6 +53,7 @@ public class DijkstrasAlgorithm
 		public void Refresh()
 		{
 			cost = float.PositiveInfinity;
+			isTempBlocked = false;
 			isExplored = false;
 			parent = null;
 		}
@@ -75,28 +77,17 @@ public class DijkstrasAlgorithm
 		}
 	}
 
-	void RefreshNodes()
-	{
-		for (int y = 0; y < mapHeight; y++)
-		{
-			for (int x = 0; x < mapWidth; x++)
-			{
-				nodes[x, y].Refresh();
-			}
-		}
-
-		nodesToExplore.Clear();
-	}
-
-	public List<Vector2Int> FindPath(Vector2Int start, Vector2Int end)
+	public List<Vector2Int> FindPath(
+		Vector2Int start,
+		Vector2Int end,
+		List<Vector2Int> tempBlockedPositions = null)
 	{
 		if (start == end) return null;
 
 		RefreshNodes();
-
-		// The start node costs nothing to move to
-		nodesToExplore.Add(NodeAtPosition(start));
-		nodesToExplore[0].cost = 0;
+		UpdateBlockedNodes(tempBlockedPositions);
+		SetupStartNode(start);
+		SetupEndNode(end);
 
 		while (nodesToExplore.Count > 0)
 		{
@@ -105,14 +96,15 @@ public class DijkstrasAlgorithm
 
 			for (int i = 0; i < neighborNodes.Length; i++)
 			{
-				// If i is even, we're looking in a cardinal direction
-				float curCost = i % 2 == 0 ? moveCostCardinal : moveCostDiagonal;
-
-				if (neighborNodes[i].isExplored || 
-					neighborNodes[i].isBlocking)
+				if (neighborNodes[i].isExplored ||
+					neighborNodes[i].isBlocked ||
+					neighborNodes[i].isTempBlocked)
 				{
 					continue;
 				}
+
+				// If i is even, we're looking in a cardinal direction
+				float curCost = i % 2 == 0 ? moveCostCardinal : moveCostDiagonal;
 
 				if (node.cost + curCost < neighborNodes[i].cost)
 				{
@@ -133,6 +125,45 @@ public class DijkstrasAlgorithm
 		}
 
 		return null;
+	}
+
+	void RefreshNodes()
+	{
+		for (int y = 0; y < mapHeight; y++)
+		{
+			for (int x = 0; x < mapWidth; x++)
+			{
+				nodes[x, y].Refresh();
+			}
+		}
+
+		nodesToExplore.Clear();
+	}
+
+	void UpdateBlockedNodes(List<Vector2Int> tempBlockedPositions)
+	{
+		if (tempBlockedPositions != null)
+		{
+			foreach (var position in tempBlockedPositions)
+			{
+				NodeAtPosition(position).isTempBlocked = true;
+			}
+		}
+	}
+
+	void SetupStartNode(Vector2Int start)
+	{
+		// The start node costs nothing to move to,
+		// and it does not block itself
+		nodesToExplore.Add(NodeAtPosition(start));
+		nodesToExplore[0].cost = 0;
+		nodesToExplore[0].isTempBlocked = false;
+	}
+
+	void SetupEndNode(Vector2Int end)
+	{
+		// The end node does not block the path
+		NodeAtPosition(end).isTempBlocked = false;
 	}
 
 	Node NodeAtPosition(Vector2Int position)
@@ -161,7 +192,6 @@ public class DijkstrasAlgorithm
 			NodeAtPosition(x - 1, y + 1)  // up left
 		};
 	}
-
 
 	Node ExploreNextLowestNode()
 	{

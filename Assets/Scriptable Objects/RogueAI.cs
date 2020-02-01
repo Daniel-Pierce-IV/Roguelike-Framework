@@ -21,9 +21,20 @@ public class RogueAI : ScriptableObject
 		{
 			entity.travelPath = rogueMap.pathFinder.FindPath(
 				entity.Position,
-				rogueMap.Player.Position);
+				rogueMap.Player.Position,
+				rogueMap.TemporarilyBlockedPositions());
 
-			// Remove first element, since its our current position
+			// If there is no available path, try again,
+			// but we'll pretend the temporary blockers are gone
+			// to get as close as possible to the target
+			if (entity.travelPath == null)
+			{
+				entity.travelPath = rogueMap.pathFinder.FindPath(
+					entity.Position,
+					rogueMap.Player.Position);
+			}
+
+			// Remove the first element, since its our current position
 			entity.travelPath.RemoveAt(0);
 
 			rogueMap.MoveEntityAlongPath(entity);

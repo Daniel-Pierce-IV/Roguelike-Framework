@@ -277,4 +277,19 @@ public class RogueMap : ScriptableObject
 			Mathf.Abs(to.x - from.x),
 			Mathf.Abs(to.y - from.y));
 	}
+
+	public List<Vector2Int> TemporarilyBlockedPositions()
+	{
+		List<Vector2Int> positions = new List<Vector2Int>();
+
+		foreach (var entity in entities)
+		{
+			if (entity.data.blocksMovement)
+			{
+				positions.Add(entity.Position);
+			}
+		}
+
+		return positions;
+	}
 }
