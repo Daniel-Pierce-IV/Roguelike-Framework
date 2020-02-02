@@ -29,7 +29,8 @@ public class RogueGameManager : MonoBehaviour
 
 				if (discoveredEntities.Count > 0)
 				{
-					rogueMap.AttackEntity(rogueMap.Player, discoveredEntities[0]);
+					//rogueMap.AttackEntity(rogueMap.Player, discoveredEntities[0]);
+					rogueMap.Player.Attack(discoveredEntities[0]);
 				}
 				else
 				{

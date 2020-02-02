@@ -5,15 +5,10 @@ using UnityEngine;
 public class Entity
 {
 	public EntityData data;
+	public Stats stats;
 	public int x;
 	public int y;
 	public List<Vector2Int> travelPath = new List<Vector2Int>();
-	public int CurHp
-	{
-		get { return curHp; }
-	}
-
-	int curHp;
 
 	public Vector2Int Position
 	{
@@ -29,7 +24,7 @@ public class Entity
 		this.data = entityData;
 		this.Position = position;
 		this.rogueMap = rogueMap;
-		curHp = data.stats.maxHp;
+		stats = data.stats.Clone();
 	}
 
 	public Vector3Int TilemapPosition()
@@ -45,5 +40,29 @@ public class Entity
 	public void Act()
 	{
 		data.ai.Act(this, rogueMap);
+	}
+
+	public void Attack(Entity target)
+	{
+		int totalDamage = target.stats.TakeDamage(stats.power);
+
+		if (totalDamage > 0)
+		{
+			Debug.Log(
+				data.name +
+				" attacks " +
+				target.data.name +
+				" for " +
+				totalDamage +
+				" damage");
+		}
+		else
+		{
+			Debug.Log(
+				data.name +
+				" attacks " +
+				target.data.name +
+				" but does no damage");
+		}
 	}
 }

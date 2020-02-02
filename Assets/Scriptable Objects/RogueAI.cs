@@ -13,9 +13,9 @@ public class RogueAI : ScriptableObject
 			entity.Position,
 			rogueMap.Player.Position);
 
-		if (distance <= attackRange && rogueMap.Player.CurHp > 0)
+		if (distance <= attackRange && rogueMap.Player.stats.curHp > 0)
 		{
-			rogueMap.AttackEntity(entity, rogueMap.Player);
+			entity.Attack(rogueMap.Player);
 		}
 		else if (distance <= sightRange)
 		{
