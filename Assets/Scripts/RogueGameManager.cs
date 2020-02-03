@@ -14,7 +14,7 @@ public class RogueGameManager : MonoBehaviour
 		EventSystem.Instance.Combat += PrintCombatMessages;
 	}
 
-	public void PrintCombatMessages(object caller, CombatEventArgs args)
+	public void PrintCombatMessages(CombatEventArgs args)
 	{
 		string attackerName = args.Attacker.data.name;
 		string defenderName = args.Defender.data.name;
