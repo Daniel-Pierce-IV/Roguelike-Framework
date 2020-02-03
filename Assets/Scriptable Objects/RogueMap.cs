@@ -14,9 +14,6 @@ public class RogueMap : ScriptableObject
 
 	public int maxRoomsPerMap;
 
-	// NOTE: default value set in inspector
-	public GameEvent onMapChange;
-
 	public RogueTileData floorTileData;
 	public RogueTileData wallTileData;
 
@@ -40,7 +37,7 @@ public class RogueMap : ScriptableObject
 	public void MoveEntityToPosition(Entity entity, Vector2Int position)
 	{
 		entity.Position = position;
-		onMapChange.Broadcast();
+		EventSystem.Instance.OnMapChange();
 	}
 
 	public void MoveEntityAlongPath(Entity entity)
@@ -51,7 +48,7 @@ public class RogueMap : ScriptableObject
 		if (PositionCanBeMovedTo(newPosition))
 		{
 			entity.Position = newPosition;
-			onMapChange.Broadcast();
+			EventSystem.Instance.OnMapChange();
 		}
 	}
 
@@ -137,7 +134,7 @@ public class RogueMap : ScriptableObject
 		SpawnPlayer();
 		SpawnMonsters();
 		pathFinder.GenerateNodes(rogueTiles);
-		onMapChange.Broadcast();
+		EventSystem.Instance.OnMapChange();
 	}
 
 	void InitializeMap()

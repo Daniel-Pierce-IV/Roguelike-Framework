@@ -152,7 +152,6 @@ GameObject:
   - component: {fileID: 8009060197513251099}
   - component: {fileID: 8009060197513251098}
   - component: {fileID: 8009060197513251108}
-  - component: {fileID: 8009060197513251097}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -199,31 +198,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f8a26bc3cfb1e6428387b2dd7794483, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rogueMap: {fileID: 11400000, guid: 2e2334f7e4faf224a91e65242e0b1f50, type: 2}
   tilemap: {fileID: 8009060197351536867}
---- !u!114 &8009060197513251097
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8009060197513251096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095825628bda9944cb73e343009610cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
-  responseToGameEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8009060197513251108}
-        m_MethodName: RenderMap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

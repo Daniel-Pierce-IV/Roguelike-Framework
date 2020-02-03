@@ -12,6 +12,11 @@ public class RogueMapRenderer : MonoBehaviour
 	float cameraXOffset = -0.5f;
 	float cameraYOffset = 0.75f;
 
+	private void OnEnable()
+	{
+		EventSystem.Instance.MapChange += RenderMap;
+	}
+
 	public void RenderMap()
 	{
 		for (int x = 0; x < rogueMap.rogueTiles.GetLength(0); x++)
