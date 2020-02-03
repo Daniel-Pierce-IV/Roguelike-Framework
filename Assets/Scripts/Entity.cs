@@ -45,24 +45,9 @@ public class Entity
 	public void Attack(Entity target)
 	{
 		int totalDamage = target.stats.TakeDamage(stats.power);
-
-		if (totalDamage > 0)
-		{
-			Debug.Log(
-				data.name +
-				" attacks " +
-				target.data.name +
-				" for " +
-				totalDamage +
-				" damage");
-		}
-		else
-		{
-			Debug.Log(
-				data.name +
-				" attacks " +
-				target.data.name +
-				" but does no damage");
-		}
+		
+		EventSystem.Instance.OnCombat(
+			//this,
+			new CombatEventArgs(this, target, totalDamage));
 	}
 }

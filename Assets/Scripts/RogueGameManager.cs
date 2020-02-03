@@ -11,6 +11,21 @@ public class RogueGameManager : MonoBehaviour
 	void Start()
 	{
 		rogueMap.GenerateMap();
+		EventSystem.Instance.Combat += PrintCombatMessages;
+	}
+
+	public void PrintCombatMessages(object caller, CombatEventArgs args)
+	{
+		string attackerName = args.Attacker.data.name;
+		string defenderName = args.Defender.data.name;
+
+		Debug.Log(
+			attackerName +
+			" attacked " +
+			defenderName +
+			" for " +
+			args.Damage +
+			" damage");
 	}
 
 	public void MovePlayer(Vector2Int direction)
