@@ -31,4 +31,14 @@ public class Stats
 
 		return totalDamage;
 	}
+
+	public bool IsAlive()
+	{
+		return curHp > 0;
+	}
+
+	public bool IsDead()
+	{
+		return curHp <= 0;
+	}
 }

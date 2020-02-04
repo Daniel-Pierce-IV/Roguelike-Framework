@@ -30,6 +30,9 @@ public class RogueGameManager : MonoBehaviour
 
 	public void MovePlayer(Vector2Int direction)
 	{
+		// Disallow any game interaction when the player dies
+		if (rogueMap.Player.stats.IsDead()) return;
+
 		if (gameState == GameStates.PlayerTurn)
 		{
 			Vector2Int newPosition = rogueMap.Player.Position + direction;

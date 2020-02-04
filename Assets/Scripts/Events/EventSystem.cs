@@ -9,6 +9,8 @@ public class EventSystem
 	// Using Action because we don't need any data about why the map changed
 	public event Action MapChange;
 
+	public event Action<Entity> Death;
+
 	// Singleton pattern
 	public static EventSystem Instance
 	{
@@ -35,5 +37,10 @@ public class EventSystem
 	public void OnMapChange()
 	{
 		MapChange();
+	}
+
+	public void OnDeath(Entity entity)
+	{
+		Death(entity);
 	}
 }

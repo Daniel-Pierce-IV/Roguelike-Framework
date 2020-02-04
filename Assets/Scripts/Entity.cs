@@ -34,7 +34,7 @@ public class Entity
 
 	public bool CanAct()
 	{
-		return data.ai != null;
+		return data.ai != null && stats.IsAlive();
 	}
 
 	public void Act()
@@ -47,7 +47,11 @@ public class Entity
 		int totalDamage = target.stats.TakeDamage(stats.power);
 		
 		EventSystem.Instance.OnCombat(
-			//this,
 			new CombatEventArgs(this, target, totalDamage));
+
+		if (target.stats.IsDead())
+		{
+			EventSystem.Instance.OnDeath(target);
+		}
 	}
 }

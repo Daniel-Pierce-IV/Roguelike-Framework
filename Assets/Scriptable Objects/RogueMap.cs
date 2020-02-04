@@ -34,6 +34,11 @@ public class RogueMap : ScriptableObject
 	List<Room> rooms;
 	public DijkstrasAlgorithm pathFinder = new DijkstrasAlgorithm();
 
+	private void OnEnable()
+	{
+		EventSystem.Instance.Death += EntityDeathHandler;
+	}
+
 	public void MoveEntityToPosition(Entity entity, Vector2Int position)
 	{
 		entity.Position = position;
@@ -116,13 +121,28 @@ public class RogueMap : ScriptableObject
 	{
 		foreach (var entity in entities)
 		{
-			if (entity.CanAct())
+			// No reason for entities to act when the player is dead
+			if (entity.CanAct() && Player.stats.IsAlive())
 			{
 				entity.Act();
 			}
 		}
 
 		RogueGameManager.gameState = GameStates.PlayerTurn;
+	}
+
+	public void EntityDeathHandler(Entity dyingEntity)
+	{
+		if (dyingEntity == Player)
+		{
+			Debug.Log("YOU DIED");
+			return;
+		}
+
+		Debug.Log("The " + dyingEntity.data.name + " was killed!");
+
+		entities.Remove(dyingEntity);
+		EventSystem.Instance.OnMapChange();
 	}
 
 	public void GenerateMap()
