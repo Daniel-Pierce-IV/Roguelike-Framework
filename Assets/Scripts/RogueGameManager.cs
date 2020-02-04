@@ -5,12 +5,14 @@ using UnityEngine;
 public class RogueGameManager : MonoBehaviour
 {
 	public static GameStates gameState = GameStates.PlayerTurn;
+	public static Entity player;
 
 	[SerializeField] RogueMap rogueMap;
 
-	void Start()
+	void OnEnable()
 	{
 		rogueMap.GenerateMap();
+		player = rogueMap.Player;
 		EventSystem.Instance.Combat += PrintCombatMessages;
 	}
 
