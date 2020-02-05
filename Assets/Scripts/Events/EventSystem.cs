@@ -6,10 +6,9 @@ public class EventSystem
 	public event EventHandler<CombatEventArgs> Combat;
 	public delegate void EventHandler<CombatEventArgs>(CombatEventArgs e);
 
-	// Using Action because we don't need any data about why the map changed
-	public event Action MapChange;
-
-	public event Action<Entity> Death;
+	// These set up their own events/delegates
+	public Action MapChange;
+	public Action<Entity> Death;
 
 	// Singleton pattern
 	public static EventSystem Instance
