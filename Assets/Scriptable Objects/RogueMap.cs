@@ -57,18 +57,6 @@ public class RogueMap : ScriptableObject
 		}
 	}
 
-	public void AttackEntity(Entity attacker, Entity defender)
-	{
-		if (attacker == Player)
-		{
-			Debug.Log("You attack the " + defender.data.name + "!");
-		}
-		else
-		{
-			Debug.Log("The " + attacker.data.name + " attacks you!");
-		}
-	}
-
 	public List<Entity> EntitiesAtPosition(Vector2Int position)
 	{
 		List<Entity> discoveredEntities = new List<Entity>();
