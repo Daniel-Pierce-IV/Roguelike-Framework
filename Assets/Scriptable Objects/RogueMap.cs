@@ -170,8 +170,9 @@ public class RogueMap : ScriptableObject
 			int height = Random.Range(minRoomHeight, maxRoomHeight + 1);
 
 			// Random map position, avoiding going past map boundaries
-			int x = Random.Range(0, mapWidth - width);
-			int y = Random.Range(0, mapHeight - height);
+			// Add 1 to account for zero-based counting
+			int x = Random.Range(0, mapWidth - width + 1);
+			int y = Random.Range(0, mapHeight - height + 1);
 
 			Room newRoom = new Room(x, y, width, height);
 

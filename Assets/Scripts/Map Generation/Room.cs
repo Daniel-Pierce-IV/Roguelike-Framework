@@ -18,8 +18,8 @@ class Room
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.x2 = x + width;
-		this.y2 = y + height;
+		this.x2 = x + width - 1;
+		this.y2 = y + height - 1;
 	}
 
 	public Vector2Int CenterPoint()
@@ -38,19 +38,25 @@ class Room
 	}
 
 	// Determines intersections by comparing start/end coordinates for both rooms
-	public bool Intersects(Room room)
+	public bool Intersects(Room otherRoom, bool canShareWalls = true)
 	{
+		if (canShareWalls)
+		{
+			return (
+				x < otherRoom.x2 && x2 > otherRoom.x &&
+				y < otherRoom.y2 && y2 > otherRoom.y);
+		}
+		
 		return (
-			x <= room.x2 && x2 >= room.x &&
-			y <= room.y2 && y2 >= room.y);
+			x <= otherRoom.x2 && x2 >= otherRoom.x &&
+			y <= otherRoom.y2 && y2 >= otherRoom.y);
 	}
 
-	public bool Intersects(List<Room> rooms)
+	public bool Intersects(List<Room> otherRooms, bool canShareWalls = true)
 	{
-		foreach (Room room in rooms)
+		foreach (Room otherRoom in otherRooms)
 		{
-			if (x <= room.x2 && x2 >= room.x && 
-				y <= room.y2 && y2 >= room.y)
+			if (Intersects(otherRoom, canShareWalls))
 			{
 				return true;
 			}
