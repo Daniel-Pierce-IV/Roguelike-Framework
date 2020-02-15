@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Dungeon Map
   m_EditorClassIdentifier: 
   mapWidth: 50
-  mapHeight: 50
+  mapHeight: 30
   minRoomWidth: 5
   maxRoomWidth: 10
   minRoomHeight: 5
   maxRoomHeight: 10
   maxRoomsPerMap: 30
-  onMapChange: {fileID: 11400000, guid: 8b11e0530b85329458664fc8c7356692, type: 2}
+  opaqueFogTile: {fileID: 11400000, guid: 20c5f34ef3d87e044838b1e9b9f4cb4b, type: 2}
+  transparentFogTile: {fileID: 11400000, guid: bed3d0ec7e404f142bc71b3b50037a34, type: 2}
   floorTileData: {fileID: 11400000, guid: 87f69bd50633b6f459ac4ad036ba4129, type: 2}
   wallTileData: {fileID: 11400000, guid: 34613ef34896a8c4cbd9018008a4b8af, type: 2}
   playerData: {fileID: 11400000, guid: 09c9d20ced110a04d8115b9a4546d32a, type: 2}

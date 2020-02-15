@@ -9,11 +9,16 @@ public class Entity
 	public int x;
 	public int y;
 	public List<Vector2Int> travelPath = new List<Vector2Int>();
+	public List<Vector2Int> PositionsInView { get; private set; }
 
 	public Vector2Int Position
 	{
 		get { return new Vector2Int(x, y); }
-		set { x = value.x; y = value.y; }
+		set { 
+			x = value.x;
+			y = value.y;
+			UpdateFieldOfView();
+		}
 	}
 
 	// The RogueMap that spawned the entity
@@ -22,8 +27,8 @@ public class Entity
 	public Entity(EntityData entityData, Vector2Int position, RogueMap rogueMap)
 	{
 		this.data = entityData;
-		this.Position = position;
 		this.rogueMap = rogueMap;
+		this.Position = position;
 		stats = data.stats.Clone();
 	}
 
@@ -53,5 +58,10 @@ public class Entity
 		{
 			EventSystem.Instance.OnDeath(target);
 		}
+	}
+
+	public void UpdateFieldOfView()
+	{
+		PositionsInView = rogueMap.PositionsVisibleFromPosition(Position);
 	}
 }

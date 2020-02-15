@@ -64,4 +64,32 @@ class Room
 
 		return false;
 	}
+
+	// Returns true if a given position is within the room 
+	public bool Contains(Vector2Int position)
+	{
+		if (position.x >= x && position.x <= x2 &&
+			position.y >= y && position.y <= y2)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	// Get a list of the positions within the room, including walls
+	public List<Vector2Int> Positions()
+	{
+		List<Vector2Int> positions = new List<Vector2Int>();
+
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				positions.Add(new Vector2Int(this.x + x, this.y + y));
+			}
+		}
+
+		return positions;
+	}
 }

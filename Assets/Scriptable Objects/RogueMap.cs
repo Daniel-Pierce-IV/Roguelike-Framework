@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "New Rogue Map", menuName = "Rogue Map")]
 public class RogueMap : ScriptableObject
@@ -14,6 +15,8 @@ public class RogueMap : ScriptableObject
 
 	public int maxRoomsPerMap;
 
+	public Tile opaqueFogTile;
+	public Tile transparentFogTile;
 	public RogueTileData floorTileData;
 	public RogueTileData wallTileData;
 
@@ -52,8 +55,7 @@ public class RogueMap : ScriptableObject
 
 		if (PositionCanBeMovedTo(newPosition))
 		{
-			entity.Position = newPosition;
-			EventSystem.Instance.OnMapChange();
+			MoveEntityToPosition(entity, newPosition);
 		}
 	}
 
@@ -297,5 +299,47 @@ public class RogueMap : ScriptableObject
 		}
 
 		return positions;
+	}
+
+	// Assumes rogue-style Field of View
+	// Returns the room tiles AND the corridor tiles (no duplicates)
+	public List<Vector2Int> PositionsVisibleFromPosition(Vector2Int position)
+	{
+		List<Vector2Int> visiblePositions = new List<Vector2Int>();
+
+		foreach (var room in rooms)
+		{
+			if (room.Contains(position))
+			{
+				visiblePositions = room.Positions();
+				break;
+			}
+		}
+
+		foreach (var nextPosition in PositionsAroundPosition(position))
+		{
+			if (!visiblePositions.Contains(nextPosition))
+			{
+				visiblePositions.Add(nextPosition);
+			}
+		}
+
+		return visiblePositions;
+	}
+
+	Vector2Int[] PositionsAroundPosition(Vector2Int position)
+	{
+		return new Vector2Int[]
+		{
+			position,
+			new Vector2Int(position.x, position.y + 1),
+			new Vector2Int(position.x + 1, position.y + 1),
+			new Vector2Int(position.x + 1, position.y),
+			new Vector2Int(position.x + 1, position.y - 1),
+			new Vector2Int(position.x, position.y - 1),
+			new Vector2Int(position.x - 1, position.y - 1),
+			new Vector2Int(position.x - 1, position.y),
+			new Vector2Int(position.x - 1, position.y + 1),
+		};
 	}
 }

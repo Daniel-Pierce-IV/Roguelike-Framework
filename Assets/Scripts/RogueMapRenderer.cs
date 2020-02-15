@@ -6,11 +6,13 @@ using UnityEngine.Tilemaps;
 public class RogueMapRenderer : MonoBehaviour
 {
 	[SerializeField] RogueMap rogueMap;
-	[SerializeField] Tilemap tilemap;
+	[SerializeField] Tilemap backgroundTilemap;
+	[SerializeField] Tilemap fogOfWarTilemap;
+	//[SerializeField] Tile emptyTile;
 	// Todo make a reference variable SO to the currently selected roguemap 
 
-	float cameraXOffset = -0.5f;
-	float cameraYOffset = 0.75f;
+	float cameraXOffset = 0.5f;
+	float cameraYOffset = 0.5f;
 
 	private void OnEnable()
 	{
@@ -23,7 +25,7 @@ public class RogueMapRenderer : MonoBehaviour
 		{
 			for (int y = 0; y < rogueMap.rogueTiles.GetLength(1); y++)
 			{
-				tilemap.SetTile(
+				backgroundTilemap.SetTile(
 					rogueMap.rogueTiles[x, y].GetTilemapPosition(),
 					rogueMap.rogueTiles[x, y].data.spriteTile);
 			}
@@ -31,11 +33,12 @@ public class RogueMapRenderer : MonoBehaviour
 
 		foreach (Entity entity in rogueMap.entities)
 		{
-			tilemap.SetTile(
+			backgroundTilemap.SetTile(
 					entity.TilemapPosition(),
 					entity.data.spriteTile);
 		}
 
+		UpdateFogOfWar();
 		UpdateCameraPosition();
 	}
 
@@ -46,5 +49,26 @@ public class RogueMapRenderer : MonoBehaviour
 				rogueMap.Player.x + cameraXOffset,
 				rogueMap.Player.y + cameraYOffset,
 				Camera.main.transform.position.z);
+	}
+
+	void UpdateFogOfWar()
+	{
+		for (int x = 0; x < rogueMap.mapWidth; x++)
+		{
+			for (int y = 0; y < rogueMap.mapHeight; y++)
+			{
+				fogOfWarTilemap.SetTile(
+					new Vector3Int(x, y, 0),
+					rogueMap.opaqueFogTile);
+			}
+		}
+
+		// Remove any fog of war from the tile the player can see
+		foreach (var position in rogueMap.Player.PositionsInView)
+		{
+			fogOfWarTilemap.SetTile(
+					(Vector3Int) position,
+					null);
+		}
 	}
 }
