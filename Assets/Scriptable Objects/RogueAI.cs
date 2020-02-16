@@ -3,41 +3,57 @@
 [CreateAssetMenu(fileName = "New AI", menuName = "Artificial Intelligence")]
 public class RogueAI : ScriptableObject
 {
+	// Attack player on sight
+	//const int sightRange = 5; TODO only use when not using FOV
+	const int attackRange = 1;
+
 	public void Act(Entity entity, RogueMap rogueMap)
 	{
-		// Attack player on sight
-		const int sightRange = 5;
-		const int attackRange = 1;
+		entity.AssessFieldOfView();
 
-		int distance = rogueMap.DistanceToPoint(
-			entity.Position,
-			rogueMap.Player.Position);
+		// TODO use a better value than Vector2Int.zero, preferrably null
+		if (entity.targetsLastKnownPosition != Vector2Int.zero)
+		{
+			// We've lost the target
+			if (entity.Position == entity.targetsLastKnownPosition)
+			{
+				entity.targetsLastKnownPosition = Vector2Int.zero;
+			}
 
-		if (distance <= attackRange && rogueMap.Player.stats.curHp > 0)
-		{
-			entity.Attack(rogueMap.Player);
-		}
-		else if (distance <= sightRange)
-		{
-			entity.travelPath = rogueMap.pathFinder.FindPath(
+			int distance = rogueMap.DistanceToPoint(
 				entity.Position,
-				rogueMap.Player.Position,
-				rogueMap.TemporarilyBlockedPositions());
+				entity.targetsLastKnownPosition);
 
-			// If there is no available path, try again,
-			// but we'll pretend the temporary blockers are gone
-			// to get as close as possible to the target
-			if (entity.travelPath == null)
+			if (distance <= attackRange && entity.target != null && entity.target.stats.IsAlive())
+			{
+				entity.Attack(rogueMap.Player);
+			}
+			// Try to be in a tile adjecent to the target
+			else if (distance > 0)
 			{
 				entity.travelPath = rogueMap.pathFinder.FindPath(
 					entity.Position,
-					rogueMap.Player.Position);
+					entity.targetsLastKnownPosition,
+					rogueMap.TemporarilyBlockedPositions());
+
+				// If there is no available path, try again,
+				// but we'll pretend the temporary blockers are gone
+				// to get as close as possible to the target
+				if (entity.travelPath == null)
+				{
+					entity.travelPath = rogueMap.pathFinder.FindPath(
+						entity.Position,
+						entity.targetsLastKnownPosition);
+				}
+
+				// Remove the first element, since its our current position
+				entity.travelPath.RemoveAt(0);
+
+				rogueMap.MoveEntityAlongPath(entity);
+
+				// Re-assess targets after moving
+				entity.AssessFieldOfView();
 			}
-
-			// Remove the first element, since its our current position
-			entity.travelPath.RemoveAt(0);
-
-			rogueMap.MoveEntityAlongPath(entity);
 		}
 	}
 

@@ -11,6 +11,9 @@ public class Entity
 	public List<Vector2Int> travelPath = new List<Vector2Int>();
 	public List<Vector2Int> PositionsInView { get; private set; }
 
+	public Entity target;
+	public Vector2Int targetsLastKnownPosition= Vector2Int.zero;
+
 	public Vector2Int Position
 	{
 		get { return new Vector2Int(x, y); }
@@ -63,5 +66,25 @@ public class Entity
 	public void UpdateFieldOfView()
 	{
 		PositionsInView = rogueMap.PositionsVisibleFromPosition(Position);
+	}
+
+	// Set/unset target based on sight
+	// Update last known position of target if available for tracking
+	public void AssessFieldOfView()
+	{
+		if (EntityIsInFieldOfView(rogueMap.Player))
+		{
+			target = rogueMap.Player;
+			targetsLastKnownPosition = target.Position;
+		}
+		else
+		{
+			target = null;
+		}
+	}
+
+	private bool EntityIsInFieldOfView(Entity entity)
+	{
+		return PositionsInView.Contains(entity.Position);
 	}
 }
