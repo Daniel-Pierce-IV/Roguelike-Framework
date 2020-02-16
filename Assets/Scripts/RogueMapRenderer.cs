@@ -8,7 +8,6 @@ public class RogueMapRenderer : MonoBehaviour
 	[SerializeField] RogueMap rogueMap;
 	[SerializeField] Tilemap backgroundTilemap;
 	[SerializeField] Tilemap fogOfWarTilemap;
-	//[SerializeField] Tile emptyTile;
 	// Todo make a reference variable SO to the currently selected roguemap 
 
 	float cameraXOffset = 0.5f;
@@ -21,9 +20,9 @@ public class RogueMapRenderer : MonoBehaviour
 
 	public void RenderMap()
 	{
-		for (int x = 0; x < rogueMap.rogueTiles.GetLength(0); x++)
+		for (int x = 0; x < rogueMap.mapWidth; x++)
 		{
-			for (int y = 0; y < rogueMap.rogueTiles.GetLength(1); y++)
+			for (int y = 0; y < rogueMap.mapHeight; y++)
 			{
 				backgroundTilemap.SetTile(
 					rogueMap.rogueTiles[x, y].GetTilemapPosition(),
