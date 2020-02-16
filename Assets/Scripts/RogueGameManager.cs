@@ -60,6 +60,11 @@ public class RogueGameManager : MonoBehaviour
 			}
 		}
 
+		PassCurrentTurn();
+	}
+
+	public void PassCurrentTurn()
+	{
 		gameState = GameStates.EnemyTurn;
 		rogueMap.SimulateEntities();
 	}
